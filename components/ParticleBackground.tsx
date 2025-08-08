@@ -9,24 +9,28 @@ export default function ParticleBackground() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // Grab the context once and assert non-null for TS
-    const raw = canvas.getContext("2d");
-    if (!raw) return;
-    const ctx: CanvasRenderingContext2D = raw;
-
-    const DPR = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
+    // Non-null-assert the context for TypeScript + early guard for runtime
+    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D | null;
+    if (!ctx) return;
 
     let w = window.innerWidth;
     let h = window.innerHeight;
-    canvas.width = w * DPR;
-    canvas.height = h * DPR;
-    canvas.style.width = `${w}px`;
-    canvas.style.height = `${h}px`;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(DPR, DPR);
+    const DPR = window.devicePixelRatio || 1;
 
-    const COUNT = Math.min(90, Math.floor((w * h) / 20000));
-    const particles = Array.from({ length: COUNT }).map(() => ({
+    function resize() {
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w * DPR;
+      canvas.height = h * DPR;
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(DPR, DPR);
+    }
+    resize();
+
+    const count = Math.min(90, Math.floor((w * h) / 20000));
+    const particles = Array.from({ length: count }).map(() => ({
       x: Math.random() * w,
       y: Math.random() * h,
       vx: (Math.random() - 0.5) * 0.6,
@@ -34,23 +38,23 @@ export default function ParticleBackground() {
       r: Math.random() * 1.6 + 0.4,
     }));
 
-    function draw() {
+    const draw = () => {
+      // ctx is typed as CanvasRenderingContext2D (non-null), so TS is happy
       ctx.clearRect(0, 0, w, h);
 
       // dots
       ctx.fillStyle = "rgba(255,255,255,0.9)";
-      particles.forEach((p) => {
+      for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
         if (p.x < 0 || p.x > w) p.vx *= -1;
         if (p.y < 0 || p.y > h) p.vy *= -1;
-
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
-      });
+      }
 
-      // faint lines
+      // lines
       ctx.lineWidth = 1;
       ctx.strokeStyle = "rgba(255,255,255,0.08)";
       for (let i = 0; i < particles.length; i++) {
@@ -70,24 +74,12 @@ export default function ParticleBackground() {
       ctx.globalAlpha = 1;
 
       rafRef.current = requestAnimationFrame(draw);
-    }
+    };
 
     draw();
-
-    function handleResize() {
-      w = window.innerWidth;
-      h = window.innerHeight;
-      canvas.width = w * DPR;
-      canvas.height = h * DPR;
-      canvas.style.width = `${w}px`;
-      canvas.style.height = `${h}px`;
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(DPR, DPR);
-    }
-
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", resize);
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", resize);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
