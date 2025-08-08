@@ -2,8 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body {
-  background-color: black;
-  color: white;
+/* Dark default + nicer text */
+html, body {
+  @apply bg-black text-white antialiased;
+}
+
+/* Helpful section rhythm */
+section {
+  @apply py-12;
+}
+
+/* Links */
+a {
+  @apply text-purple-300 hover:text-purple-200 underline-offset-4 hover:underline;
 }
