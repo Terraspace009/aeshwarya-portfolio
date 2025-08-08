@@ -1,5 +1,3 @@
-"use client";
-import React from "react";
 import ProjectCard from "@/components/ProjectCard";
 import CertificationCard from "@/components/CertificationCard";
 import Hero from "@/components/Hero";
