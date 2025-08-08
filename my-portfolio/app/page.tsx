@@ -1,13 +1,14 @@
 "use client";
 import React from "react";
-import ProjectCard from "@/app/components/ProjectCard";
-import CertificationCard from "@/app/components/CertificationCard";
-import Hero from "@/app/components/Hero";
-import About from "@/app/components/About";
-import Contact from "@/app/components/Contact";
-import ParticleBackground from "@/app/components/ParticleBackground";
+import ProjectCard from "@/components/ProjectCard";
+import CertificationCard from "@/components/CertificationCard";
+import Hero from "@/components/Hero";
+import About from "@/components/About";
+import Contact from "@/components/Contact";
+import ParticleBackground from "@/components/ParticleBackground";
 
 export default function Home() {
+
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-between overflow-hidden bg-black text-white px-4 py-8 sm:px-6 lg:px-20">
       <ParticleBackground />
