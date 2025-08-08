@@ -1,84 +1,96 @@
-'use client';
-import React, { useEffect, useRef } from 'react';
+"use client";
+import { useEffect, useRef } from "react";
 
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const rafRef = useRef<number>();
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const DPR = Math.min(window.devicePixelRatio || 1, 2);
-    let w = (canvas.width = innerWidth * DPR);
-    let h = (canvas.height = innerHeight * DPR);
-    canvas.style.width = innerWidth + 'px';
-    canvas.style.height = innerHeight + 'px';
+    const DPR = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
+
+    let w = window.innerWidth;
+    let h = window.innerHeight;
+    canvas.width = w * DPR;
+    canvas.height = h * DPR;
+    canvas.style.width = `${w}px`;
+    canvas.style.height = `${h}px`;
     ctx.scale(DPR, DPR);
 
-    const P = 80;
-    const particles = Array.from({ length: P }, () => ({
-      x: Math.random() * innerWidth,
-      y: Math.random() * innerHeight,
+    const COUNT = Math.min(90, Math.floor((w * h) / 20000));
+    const particles = Array.from({ length: COUNT }).map(() => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
       vx: (Math.random() - 0.5) * 0.6,
       vy: (Math.random() - 0.5) * 0.6,
+      r: Math.random() * 1.6 + 0.4,
     }));
 
-    const resize = () => {
-      w = canvas.width = innerWidth * DPR;
-      h = canvas.height = innerHeight * DPR;
-      canvas.style.width = innerWidth + 'px';
-      canvas.style.height = innerHeight + 'px';
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(DPR, DPR);
-    };
-    addEventListener('resize', resize);
-
-    const draw = () => {
-      ctx.clearRect(0, 0, innerWidth, innerHeight);
-      // dots
-      ctx.fillStyle = 'rgba(255,255,255,0.6)';
-      for (const p of particles) {
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = "rgba(255,255,255,0.9)";
+      particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
-        if (p.x < 0 || p.x > innerWidth) p.vx *= -1;
-        if (p.y < 0 || p.y > innerHeight) p.vy *= -1;
-
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 1.2, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
-      }
-      // lines
-      ctx.strokeStyle = 'rgba(168,85,247,0.25)'; // purple-500/25
-      for (let i = 0; i < P; i++) {
-        for (let j = i + 1; j < P; j++) {
-          const a = particles[i];
-          const b = particles[j];
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          const d = Math.hypot(dx, dy);
-          if (d < 110) {
-            ctx.globalAlpha = 1 - d / 110;
+      });
+
+      // faint connecting lines
+      ctx.strokeStyle = "rgba(255,255,255,0.08)";
+      ctx.lineWidth = 1;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < 120 * 120) {
+            ctx.globalAlpha = 1 - d2 / (120 * 120);
             ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
             ctx.stroke();
+            ctx.globalAlpha = 1;
           }
         }
       }
-      ctx.globalAlpha = 1;
 
       rafRef.current = requestAnimationFrame(draw);
-    };
+    }
 
     draw();
+
+    function handleResize() {
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w * DPR;
+      canvas.height = h * DPR;
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(DPR, DPR);
+    }
+    window.addEventListener("resize", handleResize);
+
     return () => {
-      removeEventListener('resize', resize);
+      window.removeEventListener("resize", handleResize);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 -z-10" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 -z-10 pointer-events-none"
+      aria-hidden="true"
+    />
+  );
 }
