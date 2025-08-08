@@ -1,19 +1,10 @@
-'use client';
-import React from 'react';
+"use client";
 
-type Props = {
-  title: string;
-  provider?: string;
-};
-
-export default function CertificationCard({ title, provider }: Props) {
+export default function CertificationCard({ title }: { title: string }) {
   return (
-    <div
-      className="bg-neutral-900/70 border border-purple-500/40 rounded-xl p-5
-                 hover:border-purple-400 transition"
-    >
-      <div className="text-white font-semibold">{title}</div>
-      {provider ? <div className="text-xs text-purple-300 mt-2">{provider}</div> : null}
+    <div className="card p-4 text-center hover:border-purple-400/50 transition">
+      <p className="font-medium">{title}</p>
+      <p className="text-xs text-zinc-400 mt-1">Coursera / Multiple</p>
     </div>
   );
 }
