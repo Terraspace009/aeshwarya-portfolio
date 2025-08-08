@@ -9,8 +9,10 @@ export default function ParticleBackground() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    // Grab the context once and assert non-null for TS
+    const raw = canvas.getContext("2d");
+    if (!raw) return;
+    const ctx: CanvasRenderingContext2D = raw;
 
     const DPR = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
 
@@ -20,6 +22,7 @@ export default function ParticleBackground() {
     canvas.height = h * DPR;
     canvas.style.width = `${w}px`;
     canvas.style.height = `${h}px`;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(DPR, DPR);
 
     const COUNT = Math.min(90, Math.floor((w * h) / 20000));
@@ -33,20 +36,23 @@ export default function ParticleBackground() {
 
     function draw() {
       ctx.clearRect(0, 0, w, h);
+
+      // dots
       ctx.fillStyle = "rgba(255,255,255,0.9)";
       particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
         if (p.x < 0 || p.x > w) p.vx *= -1;
         if (p.y < 0 || p.y > h) p.vy *= -1;
+
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
       });
 
-      // faint connecting lines
-      ctx.strokeStyle = "rgba(255,255,255,0.08)";
+      // faint lines
       ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(255,255,255,0.08)";
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -58,10 +64,10 @@ export default function ParticleBackground() {
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
             ctx.stroke();
-            ctx.globalAlpha = 1;
           }
         }
       }
+      ctx.globalAlpha = 1;
 
       rafRef.current = requestAnimationFrame(draw);
     }
@@ -78,8 +84,8 @@ export default function ParticleBackground() {
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(DPR, DPR);
     }
-    window.addEventListener("resize", handleResize);
 
+    window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -94,3 +100,4 @@ export default function ParticleBackground() {
     />
   );
 }
+
