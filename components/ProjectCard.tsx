@@ -1,25 +1,29 @@
-"use client";
-import React from "react";
+'use client';
+import React from 'react';
 
-interface ProjectCardProps {
+type ProjectCardProps = {
   title: string;
   description: string;
-  image: string;
-}
+  image: string; // path in /public, e.g. /projects/one.png
+};
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, image }) => {
+export default function ProjectCard({ title, description, image }: ProjectCardProps) {
   return (
-    <div className="bg-neutral-900 border border-purple-500 text-white rounded-lg shadow-md 
-                    w-56 sm:w-48 md:w-52 p-4 hover:shadow-purple-500/40 transition duration-300">
+    <article
+      className="bg-neutral-900/70 border border-purple-500/40 rounded-xl overflow-hidden
+                 shadow-lg hover:shadow-purple-500/30 transition duration-300"
+    >
       <img
         src={image}
         alt={title}
-        className="w-full h-28 object-cover rounded-md mb-3"
+        className="w-full h-40 object-cover object-center"
+        loading="lazy"
+        decoding="async"
       />
-      <h3 className="text-lg font-bold mb-1">{title}</h3>
-      <p className="text-xs text-gray-300">{description}</p>
-    </div>
+      <div className="p-4">
+        <h3 className="text-lg font-semibold">{title}</h3>
+        <p className="mt-2 text-sm text-neutral-300 line-clamp-3">{description}</p>
+      </div>
+    </article>
   );
-};
-
-export default ProjectCard;
+}
