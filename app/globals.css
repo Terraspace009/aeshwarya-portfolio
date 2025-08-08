@@ -2,17 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Dark default + nicer text */
+/* Global dark defaults */
 html, body {
-  @apply bg-black text-white antialiased;
+  background: #000;
+  color: #fff;
 }
 
-/* Helpful section rhythm */
-section {
-  @apply py-12;
-}
+/* Smooth scroll & headings */
+html { scroll-behavior: smooth; }
+h1,h2,h3 { @apply tracking-tight; }
 
-/* Links */
-a {
-  @apply text-purple-300 hover:text-purple-200 underline-offset-4 hover:underline;
-}
+/* Reusable UI bits */
+.btn { @apply inline-flex items-center gap-2 rounded-lg px-4 py-2 font-medium transition; }
+.card { @apply bg-zinc-900/70 border border-white/10 rounded-xl shadow-lg backdrop-blur-md; }
