@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import Hero from "../components/Hero";
 import About from "../components/About";
@@ -9,58 +10,54 @@ import ParticleBackground from "../components/ParticleBackground";
 
 export default function Home() {
   return (
-    <main className="relative bg-black text-white min-h-screen overflow-hidden">
+    <main className="bg-black text-white min-h-screen relative">
       <ParticleBackground />
+
       <Hero />
       <About />
 
       {/* Projects */}
-      <section id="projects" className="p-8">
+      <section id="projects" className="p-8 max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold mb-6">Projects</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid gap-6 sm:grid-cols-2">
           <ProjectCard
             title="TERRA Cypher – Emotion Detection HUD"
-            description="Realtime emotion recognition with webcam and ASCII face rendering. Cyberpunk-style radar visualization using MobileNetV2."
+            description="A cyberpunk-inspired, real-time emotion detection interface with ASCII face rendering."
             image="/projects/one.png"
-            codeLink="https://github.com/Terraspace009/terra-cypherweb"
-            demoLink="https://terra-cypherweb-b8yxnpeu9rjnwikjcf45jy.streamlit.app/"
           />
+
           <ProjectCard
             title="ByteMe – Sarcastic Emotion Bot"
-            description="A dark humour chatbot that reacts to your feelings with wit and sarcasm. Powered by OpenAI and Streamlit."
+            description="A sentiment-aware chatbot that reacts with wit and dark humor."
             image="/projects/two.png"
-            codeLink="https://github.com/Terraspace009/ByteMe"
-            demoLink="https://byteme-n6z2wt7c3gy5z3iyoisazl.streamlit.app/"
           />
-          <ProjectCard
-            title="Hotel Booking Cancellation Predictor"
-            description="Predicts if a hotel booking is likely to be cancelled. Built with Streamlit & scikit‑learn."
-            image="/projects/three.png"
-            codeLink="https://github.com/Terraspace009/hotel-booking-prediction"
-            demoLink="https://hotel-booking-prediction-9p7h3dhndnzxq26btdeduu.streamlit.app/"
-          />
+
           <ProjectCard
             title="Gesture Music Instrument"
-            description="Create music with your hands using computer vision and live gesture tracking."
-            image="/projects/four.png"
-            codeLink="https://github.com/Terraspace009/terra-mixer-ui"
-            demoLink="#" // upcoming
+            description="Hand-gesture controlled music loops using computer vision."
+            image="/projects/three.png"
           />
+
+          <ProjectCard
+            title="Hotel Booking Cancellation Predictor"
+            description="Predicts booking cancellations using a trained scikit‑learn model."
+            image="/projects/four.png"
+          />
+
           <ProjectCard
             title="Azure Computer Vision App"
-            description="Upload an image and explore what Azure sees — captions, tags, objects, and OCR."
+            description="Upload images to get captions, tags, objects, and OCR with Azure CV."
             image="/projects/five.png"
-            codeLink="https://github.com/Terraspace009/azure-cv-app"
-            demoLink="https://azure-cv-app-n7hamxehg76uncshsuvfea.streamlit.app/"
           />
         </div>
       </section>
 
       {/* Certifications */}
-      <section id="certifications" className="p-8">
+      <section id="certifications" className="p-8 max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold mb-6">Certifications</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+        <div className="grid gap-4 sm:grid-cols-3">
           <CertificationCard title="Machine Learning Specialization" />
           <CertificationCard title="Deep Learning Specialization" />
           <CertificationCard title="Applied Data Science" />
@@ -71,3 +68,4 @@ export default function Home() {
     </main>
   );
 }
+
