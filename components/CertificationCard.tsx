@@ -1,16 +1,19 @@
-"use client";
-import React from "react";
+'use client';
+import React from 'react';
 
-interface Props {
+type Props = {
   title: string;
-}
-
-const CertificationCard: React.FC<Props> = ({ title }) => {
-  return (
-    <div className="p-6 border border-purple-500 text-white rounded-lg w-64 text-center font-bold text-lg bg-black">
-      {title}
-    </div>
-  );
+  provider?: string;
 };
 
-export default CertificationCard;
+export default function CertificationCard({ title, provider }: Props) {
+  return (
+    <div
+      className="bg-neutral-900/70 border border-purple-500/40 rounded-xl p-5
+                 hover:border-purple-400 transition"
+    >
+      <div className="text-white font-semibold">{title}</div>
+      {provider ? <div className="text-xs text-purple-300 mt-2">{provider}</div> : null}
+    </div>
+  );
+}
