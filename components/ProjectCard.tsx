@@ -1,28 +1,28 @@
-'use client';
-import React from 'react';
+"use client";
+import Image from "next/image";
 
-type ProjectCardProps = {
+type Props = {
   title: string;
   description: string;
-  image: string; // path in /public, e.g. /projects/one.png
+  image: string;
 };
 
-export default function ProjectCard({ title, description, image }: ProjectCardProps) {
+export default function ProjectCard({ title, description, image }: Props) {
   return (
-    <article
-      className="bg-neutral-900/70 border border-purple-500/40 rounded-xl overflow-hidden
-                 shadow-lg hover:shadow-purple-500/30 transition duration-300"
-    >
-      <img
-        src={image}
-        alt={title}
-        className="w-full h-40 object-cover object-center"
-        loading="lazy"
-        decoding="async"
-      />
+    <article className="card overflow-hidden">
+      <div className="relative w-full h-44 sm:h-48">
+        <Image
+          src={image}
+          alt={title}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 50vw"
+          priority={false}
+        />
+      </div>
       <div className="p-4">
         <h3 className="text-lg font-semibold">{title}</h3>
-        <p className="mt-2 text-sm text-neutral-300 line-clamp-3">{description}</p>
+        <p className="text-sm text-zinc-300 mt-2">{description}</p>
       </div>
     </article>
   );
