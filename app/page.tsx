@@ -40,14 +40,14 @@ export default function Home() {
             <ProjectCard
               title="Gesture Music Instrument"
               description="Control loops with hand gestures via computer vision."
-              image="/projects/three.png"
+              image="/projects/four.png"
               codeLink="https://github.com/Terraspace009/gesture-music" // Add if exists
               demoLink="" // Optional if demo not deployed
             />
             <ProjectCard
               title="Hotel Booking Cancellation Predictor"
               description="Predict cancellations using a trained scikit‑learn model."
-              image="/projects/four.png"
+              image="/projects/three.png"
               codeLink="https://github.com/Terraspace009/hotel-booking-prediction"
               demoLink="https://hotel-booking-prediction-9p7h3dhndnzxq26btdeduu.streamlit.app"
             />
