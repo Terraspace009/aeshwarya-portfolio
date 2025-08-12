@@ -1,22 +1,20 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useRef, useEffect } from "react";
 
-const ParticleBackground = () => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+export default function ParticleBackground() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-
-    if (!canvas) return; // ✅ Safeguard
+    if (!canvas) return;
 
     const ctx = canvas.getContext("2d");
-    if (!ctx) return; // ✅ Safeguard
+    if (!ctx) return;
 
     const DPR = window.devicePixelRatio || 1;
     const w = window.innerWidth;
     const h = window.innerHeight;
 
-    // ✅ Now TypeScript knows canvas is safe
     canvas.width = w * DPR;
     canvas.height = h * DPR;
     canvas.style.width = `${w}px`;
@@ -31,6 +29,7 @@ const ParticleBackground = () => {
     }));
 
     const draw = () => {
+      if (!ctx) return;
       ctx.clearRect(0, 0, w, h);
       ctx.fillStyle = "rgba(255,255,255,0.9)";
       particles.forEach((p) => {
@@ -51,11 +50,8 @@ const ParticleBackground = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-0 pointer-events-none"
+      className="fixed inset-0 w-full h-full z-0 pointer-events-none"
       style={{ background: "transparent" }}
     />
   );
-};
-
-export default ParticleBackground;
-
+}
