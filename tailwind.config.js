@@ -3,7 +3,7 @@ module.exports = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
-    "./pages/**/*.{js,ts,jsx,tsx}",   // fine to include even if you only use /app
+    "./pages/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
