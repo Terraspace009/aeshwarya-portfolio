@@ -1,49 +1,24 @@
 'use client';
-import React from 'react';
+import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
 
 export default function Contact() {
   return (
-    <section id="contact" className="px-4">
-      <div className="mx-auto max-w-4xl bg-neutral-900/70 border border-purple-500/30 rounded-2xl p-8">
-        <h2 className="text-3xl font-bold text-center mb-4">Get in Touch</h2>
-        <p className="text-center text-neutral-300 mb-8">
-          Interested in collaborating or discussing creative AI projects?
-        </p>
-
-        <div className="flex items-center justify-center gap-6">
-          <a
-            href="mailto:aeshu009@gmail.com"
-            className="w-12 h-12 rounded-full bg-neutral-800 border border-purple-500/30
-                       grid place-items-center hover:border-purple-400"
-            aria-label="Email"
-            title="Email"
-          >
-            ✉️
-          </a>
-          <a
-            href="https://github.com/Terraspace009"
-            target="_blank"
-            rel="noreferrer"
-            className="w-12 h-12 rounded-full bg-neutral-800 border border-purple-500/30
-                       grid place-items-center hover:border-purple-400"
-            aria-label="GitHub"
-            title="GitHub"
-          >
-            🐙
-          </a>
-          <a
-            href="https://www.linkedin.com/in/aeshwarya-shukla-90835b57/"
-            target="_blank"
-            rel="noreferrer"
-            className="w-12 h-12 rounded-full bg-neutral-800 border border-purple-500/30
-                       grid place-items-center hover:border-purple-400"
-            aria-label="LinkedIn"
-            title="LinkedIn"
-          >
-            in
-          </a>
+    <div className="flex justify-center items-center gap-6 mt-10">
+      <a href="mailto:aeshu009@gmail.com" target="_blank" rel="noopener noreferrer">
+        <div className="w-12 h-12 rounded-full border border-white/40 flex items-center justify-center hover:bg-white/10 transition">
+          <FaEnvelope className="text-white text-xl" />
         </div>
-      </div>
-    </section>
+      </a>
+      <a href="https://github.com/Terraspace009" target="_blank" rel="noopener noreferrer">
+        <div className="w-12 h-12 rounded-full border border-white/40 flex items-center justify-center hover:bg-white/10 transition">
+          <FaGithub className="text-white text-xl" />
+        </div>
+      </a>
+      <a href="https://www.linkedin.com/in/aishwaryas-ai" target="_blank" rel="noopener noreferrer">
+        <div className="w-12 h-12 rounded-full border border-white/40 flex items-center justify-center hover:bg-white/10 transition">
+          <FaLinkedin className="text-white text-xl" />
+        </div>
+      </a>
+    </div>
   );
 }
