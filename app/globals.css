@@ -2,13 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Global dark theme */
 html, body {
   background: #000;
   color: #fff;
 }
 
-/* Reusable styles */
 .btn {
   @apply inline-flex items-center gap-2 rounded-lg px-4 py-2 font-medium transition;
 }
