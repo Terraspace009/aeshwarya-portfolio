@@ -1,12 +1,12 @@
 'use client';
 import { useCallback } from "react";
-import { Engine } from "@tsparticles/engine";
+import Particles from "react-tsparticles";
+import type { Engine } from "@tsparticles/engine";
 import { loadBasic } from "@tsparticles/basic";
-import Particles from "@tsparticles/react";
 
 export default function ParticleBackground() {
   const particlesInit = useCallback(async (engine: Engine) => {
-    await loadBasic(engine); // Load basic bundle
+    await loadBasic(engine);
   }, []);
 
   return (
@@ -20,13 +20,8 @@ export default function ParticleBackground() {
           number: { value: 80, density: { enable: true, area: 800 } },
           color: { value: "#ffffff" },
           shape: { type: "circle" },
-          opacity: {
-            value: 0.5
-          },
-          size: {
-            value: 3,
-            random: true
-          },
+          opacity: { value: 0.5 },
+          size: { value: 3, random: true },
           links: {
             enable: true,
             distance: 120,
@@ -55,4 +50,3 @@ export default function ParticleBackground() {
     />
   );
 }
-
