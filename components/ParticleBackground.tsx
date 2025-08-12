@@ -1,100 +1,92 @@
 "use client";
-
 import { useEffect, useRef } from "react";
 
 export default function ParticleBackground() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const rafRef = useRef<number | null>(null);
+  const ref = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    // Guard: only run in the browser
-    if (typeof window === "undefined") return;
+    const canvas = ref.current;
+    if (!canvas) return;
 
-    const c = canvasRef.current;
-    if (!c) return; // TS: from this point, c is non-null
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-    const ctx = c.getContext("2d");
-    if (!ctx) return; // TS: from this point, ctx is non-null
-
-    let w = 0;
-    let h = 0;
-    const DPR = window.devicePixelRatio || 1;
-
-    const resize = () => {
-      w = window.innerWidth;
-      h = window.innerHeight;
-      c.width = w * DPR;
-      c.height = h * DPR;
-      c.style.width = `${w}px`;
-      c.style.height = `${h}px`;
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(DPR, DPR);
-    };
-
+    function resize() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      canvas.width = w * DPR;
+      canvas.height = h * DPR;
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
     resize();
+    window.addEventListener("resize", resize);
 
-    const count = Math.min(90, Math.floor((w * h) / 20000));
-    const particles = Array.from({ length: count }).map(() => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
+    type P = { x: number; y: number; vx: number; vy: number; r: number };
+    const N = 70;
+    const particles: P[] = Array.from({ length: N }).map(() => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
       vx: (Math.random() - 0.5) * 0.6,
       vy: (Math.random() - 0.5) * 0.6,
-      r: Math.random() * 1.6 + 0.4,
+      r: 1.2 + Math.random() * 1.3,
     }));
 
-    const draw = () => {
-      // safe: ctx is not null here
+    let raf = 0;
+    function draw() {
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
       ctx.clearRect(0, 0, w, h);
 
-      // dots
       ctx.fillStyle = "rgba(255,255,255,0.9)";
-      for (const p of particles) {
+      particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
-        if (p.x < 0 || p.x > w) p.vx *= -1;
-        if (p.y < 0 || p.y > h) p.vy *= -1;
+
+        if (p.x < -50) p.x = w + 50;
+        if (p.x > w + 50) p.x = -50;
+        if (p.y < -50) p.y = h + 50;
+        if (p.y > h + 50) p.y = -50;
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
-      }
+      });
 
-      // lines
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = "rgba(255,255,255,0.08)";
-      for (let i = 0; i < particles.length; i++) {
+      // faint links
+      ctx.strokeStyle = "rgba(168,85,247,0.15)"; // purple-500 @ low alpha
+      particles.forEach((a, i) => {
         for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
+          const b = particles[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
           const d2 = dx * dx + dy * dy;
-          if (d2 < 120 * 120) {
-            ctx.globalAlpha = 1 - d2 / (120 * 120);
+          if (d2 < 130 * 130) {
             ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
             ctx.stroke();
           }
         }
-      }
-      ctx.globalAlpha = 1;
+      });
 
-      rafRef.current = requestAnimationFrame(draw);
-    };
-
-    draw();
-    window.addEventListener("resize", resize);
+      raf = requestAnimationFrame(draw);
+    }
+    raf = requestAnimationFrame(draw);
 
     return () => {
+      cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
   return (
     <canvas
-      ref={canvasRef}
-      className="fixed inset-0 -z-10 pointer-events-none"
-      aria-hidden="true"
+      ref={ref}
+      aria-hidden
+      className="pointer-events-none fixed inset-0 -z-10"
     />
   );
 }
