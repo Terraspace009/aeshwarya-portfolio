@@ -13,6 +13,10 @@ export default function Home() {
       <ParticleBackground />
 
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="text-red-500 font-bold text-3xl">
+  ⚠️ Tailwind Test Element
+</div>
+
         <Hero />
         <About />
       </section>
