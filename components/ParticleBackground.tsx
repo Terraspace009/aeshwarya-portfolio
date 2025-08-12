@@ -1,58 +1,61 @@
-"use client";
-import { useRef, useEffect } from "react";
+'use client';
+import { useCallback } from "react";
+import Particles from "react-particles";
+import { loadFull } from "tsparticles";
 
 export default function ParticleBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const DPR = window.devicePixelRatio || 1;
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-
-    canvas.width = w * DPR;
-    canvas.height = h * DPR;
-    canvas.style.width = `${w}px`;
-    canvas.style.height = `${h}px`;
-    ctx.scale(DPR, DPR);
-
-    const particles = Array.from({ length: 80 }, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
-    }));
-
-    const draw = () => {
-      if (!ctx) return;
-      ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = "rgba(255,255,255,0.9)";
-      particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0 || p.x > w) p.vx *= -1;
-        if (p.y < 0 || p.y > h) p.vy *= -1;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 1.5, 0, 2 * Math.PI);
-        ctx.fill();
-      });
-      requestAnimationFrame(draw);
-    };
-
-    draw();
+  const particlesInit = useCallback(async (engine) => {
+    await loadFull(engine);
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 w-full h-full z-0 pointer-events-none"
-      style={{ background: "transparent" }}
+    <Particles
+      id="tsparticles"
+      init={particlesInit}
+      options={{
+        fullScreen: { enable: true, zIndex: -1 },
+        background: { color: "#000000" },
+        particles: {
+          number: { value: 80, density: { enable: true, area: 800 } },
+          color: { value: "#ffffff" },
+          shape: { type: "circle" },
+          opacity: {
+            value: 0.5,
+            random: false,
+            anim: { enable: false }
+          },
+          size: {
+            value: 3,
+            random: true,
+            anim: { enable: false }
+          },
+          links: {
+            enable: true,
+            distance: 120,
+            color: "#ffffff",
+            opacity: 0.3,
+            width: 1
+          },
+          move: {
+            enable: true,
+            speed: 1.2,
+            direction: "none",
+            outModes: { default: "bounce" }
+          }
+        },
+        interactivity: {
+          events: {
+            onHover: { enable: true, mode: "grab" },
+            resize: true
+          },
+          modes: {
+            grab: { distance: 140, links: { opacity: 0.5 } }
+          }
+        },
+        detectRetina: true
+      }}
     />
   );
 }
+
 
