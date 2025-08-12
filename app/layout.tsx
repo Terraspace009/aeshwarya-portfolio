@@ -1,21 +1,21 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css"; // this brings in Tailwind
 
-/* Global dark theme defaults */
-html, body {
-  background: #000;
-  color: #fff;
-}
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
-/* Smooth scroll & headings */
-html { scroll-behavior: smooth; }
-h1, h2, h3 { @apply tracking-tight; }
+export const metadata: Metadata = {
+  title: "Aishwarya S",
+  description: "Data Science × Creative Technology",
+};
 
-/* Reusable UI components */
-.btn {
-  @apply inline-flex items-center gap-2 rounded-lg px-4 py-2 font-medium transition;
-}
-.card {
-  @apply bg-zinc-900/70 border border-white/10 rounded-xl shadow-lg backdrop-blur-md;
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable} bg-black text-white antialiased`}>
+        {children}
+      </body>
+    </html>
+  );
 }
