@@ -27,35 +27,30 @@ export default function Home() {
               title="TERRA Cypher – Emotion Detection HUD"
               description="Real‑time emotion detection with ASCII overlay in a cyberpunk HUD."
               image="/projects/one.png"
-              codeLink="https://github.com/Terraspace009/terra-cypherweb/blob/main/app.py"
               demoLink="https://terra-cypherweb-b8yxnpeu9rjnwikjcf45jy.streamlit.app/"
             />
             <ProjectCard
               title="ByteMe – Sarcastic Emotion Bot"
               description="A sentiment‑aware chatbot that reacts with witty dark humour."
               image="/projects/two.png"
-              codeLink="https://github.com/Terraspace009/ByteMe"
               demoLink="https://byteme-n6z2wt7c3gy5z3iyoisazl.streamlit.app/"
             />
             <ProjectCard
               title="Gesture Music Instrument"
               description="Control loops with hand gestures via computer vision."
               image="/projects/four.png"
-              codeLink="https://github.com/Terraspace009/gesture-music" // Add if exists
-              demoLink="" // Optional if demo not deployed
+              demoLink=""
             />
             <ProjectCard
               title="Hotel Booking Cancellation Predictor"
               description="Predict cancellations using a trained scikit‑learn model."
               image="/projects/three.png"
-              codeLink="https://github.com/Terraspace009/hotel-booking-prediction"
               demoLink="https://hotel-booking-prediction-9p7h3dhndnzxq26btdeduu.streamlit.app"
             />
             <ProjectCard
               title="Azure Computer Vision App"
               description="Captions, tags, objects, and OCR using Azure CV."
               image="/projects/five.png"
-              codeLink="https://github.com/Terraspace009/azure-cv-app"
               demoLink="https://azure-cv-app-n7hamxehg76uncshsuvfea.streamlit.app/"
             />
           </div>
